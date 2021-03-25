@@ -12,6 +12,13 @@ export const state = {
   bookmarks: [],
 };
 
+/**
+ * Converts a recipe object received from the API to the format that can be used by this
+ * application.
+ *
+ * @param {object} data The received recipe object.
+ * @returns {object} A recipe object in the correct format for this application.
+ */
 const createRecipeObject = function (data) {
   const { recipe } = data.data;
 
@@ -28,6 +35,13 @@ const createRecipeObject = function (data) {
   };
 };
 
+/**
+ * Requests recipe data from the API and stores it in the application state.
+ *
+ * @param {string} id The id of the recipe to be loaded.
+ * @throws Throws a TimeoutError if the request timed out.
+ * @throws Throws an error if the request was invalid.
+ */
 export const loadRecipe = async function (id) {
   try {
     const data = await AJAX(`${API_URL}/${id}?key=${API_KEY}`);
@@ -39,6 +53,14 @@ export const loadRecipe = async function (id) {
   }
 };
 
+/**
+ * Sends a search query to the API and stores the received results in the application
+ * state.
+ *
+ * @param {string} query The search term which will be sent to the API.
+ * @throws Throws a TimeoutError if the request timed out.
+ * @throws Throws an error if the request was invalid.
+ */
 export const loadSearchResults = async function (query) {
   try {
     state.search.query = query;
@@ -62,6 +84,12 @@ export const loadSearchResults = async function (query) {
   }
 };
 
+/**
+ * Returns an array of search results that make up the requested results page.
+ *
+ * @param {number} [page=state.search.page] - The number of the page.
+ * @returns An array of recipe objects.
+ */
 export const getSearchResultsPage = function (page = state.search.page) {
   state.search.page = page;
 
@@ -71,6 +99,12 @@ export const getSearchResultsPage = function (page = state.search.page) {
   return state.search.results.slice(start, end);
 };
 
+/**
+ * Calculates the amount of ingredients needed for the new number of servings and
+ * updates the application state.
+ *
+ * @param {number} newServings The new number of servings.
+ */
 export const updateServings = function (newServings) {
   // newQt = oldQt / oldServings * newServings
   state.recipe.ingredients.forEach(
@@ -80,10 +114,19 @@ export const updateServings = function (newServings) {
   state.recipe.servings = newServings;
 };
 
+/**
+ * Saves the current bookmarks to
+ * {@link https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage localStorage}.
+ */
 const saveBookmarks = function () {
   localStorage.setItem('bookmarks', JSON.stringify(state.bookmarks));
 };
 
+/**
+ * Adds the received recipe to the user's bookmarks.
+ *
+ * @param {object} recipe An object representing the recipe to be bookmarked.
+ */
 export const addBookmark = function (recipe) {
   state.bookmarks.push(recipe);
 
@@ -94,6 +137,11 @@ export const addBookmark = function (recipe) {
   saveBookmarks();
 };
 
+/**
+ * Removes a recipe from the user's bookmarks.
+ *
+ * @param {string} id ID of the recipe to be removed from the bookmarks.
+ */
 export const deleteBookmark = function (id) {
   const index = state.bookmarks.findIndex(bm => bm.id === id);
 
@@ -107,6 +155,24 @@ export const deleteBookmark = function (id) {
   saveBookmarks();
 };
 
+/**
+ * Sends recipe data to the API. On success the API will send back the same recipe
+ * which will then be set as the currently active recipe in the application.
+ *
+ * The recipeData object must have the properties "ingredient-1" ... "ingredient-6" with
+ * their values being in the format "quantity,unit,description".
+ *
+ * @param {object} recipeData An object containing recipe data.
+ * @param {string} recipeData.title - The name of the recipe.
+ * @param {string} recipeData.publisher - The author of the recipe.
+ * @param {string} recipeData.sourceUrl - The URL of the website providing the recipe.
+ * @param {string} recipeData.image - The URL of the recipe image.
+ * @param {number} recipeData.servings - The default number of servings.
+ * @param {number} recipeData.cookingTime - The preparation time in minutes.
+ *
+ * @throws Will throw an error if the ingredients have the wrong format.
+ * @throws Will throw an error if adding the recipe was not successful.
+ */
 export const uploadRecipe = async function (recipeData) {
   try {
     const ingredients = Object.entries(recipeData)
@@ -149,6 +215,9 @@ export const uploadRecipe = async function (recipeData) {
   }
 };
 
+/**
+ * Loads the user's bookmarks and updates the application state.
+ */
 const init = function () {
   state.bookmarks = JSON.parse(localStorage.getItem('bookmarks')) ?? [];
 };
