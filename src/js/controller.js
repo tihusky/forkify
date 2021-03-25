@@ -16,6 +16,9 @@ import editorView from './views/editorView.js';
 
 ///////////////////////////////////////
 
+/**
+ * Loads a recipe from the API and renders it.
+ */
 const controlRecipes = async function () {
   try {
     const id = window.location.hash.slice(1);
@@ -40,6 +43,9 @@ const controlRecipes = async function () {
   }
 };
 
+/**
+ * Sends a search query to the API and renders the results.
+ */
 const controlSearchResults = async function () {
   try {
     // 1) Get search query
@@ -62,6 +68,11 @@ const controlSearchResults = async function () {
   }
 };
 
+/**
+ * Renders the requested page of search results and updates the pagination.
+ *
+ * @param {number} goToPage The page of search results to be rendered.
+ */
 const controlPagination = function (goToPage) {
   // 1) Render new results
   resultsView.render(model.getSearchResultsPage(goToPage));
@@ -70,6 +81,11 @@ const controlPagination = function (goToPage) {
   paginationView.render(model.state.search);
 };
 
+/**
+ * Updates the number of servings for the currently shown recipe.
+ *
+ * @param {number} newServings The new amount of servings.
+ */
 const controlServings = function (newServings) {
   // 1) Update recipe object
   model.updateServings(newServings);
@@ -78,6 +94,9 @@ const controlServings = function (newServings) {
   recipeView.update(model.state.recipe);
 };
 
+/**
+ * Toggles the bookmarked state for the currently shown recipe and updates the UI.
+ */
 const controlBookmarks = function () {
   // 1) Add / remove bookmark
   if (!model.state.recipe.bookmarked) {
@@ -93,12 +112,34 @@ const controlBookmarks = function () {
   bookmarksView.render(model.state.bookmarks);
 };
 
+/**
+ * Renders the bookmark panel.
+ */
 const controlBookmarksRender = function () {
   bookmarksView.render(model.state.bookmarks);
 };
 
+/**
+ * Sends recipe data to the API and updates the UI as well as the URL.
+ *
+ * The data object must have the properties "ingredient-1" ... "ingredient-6" with
+ * their values being in the format "quantity,unit,description".
+ *
+ * Newly submitted recipes are bookmarked by default and then shown in
+ * the recipe view.
+ *
+ * @param {object} data An object containing recipe data.
+ * @param {string} data.title - The name of the recipe.
+ * @param {string} data.publisher - The author of the recipe.
+ * @param {string} data.sourceUrl - The URL of the website providing the recipe.
+ * @param {string} data.image - The URL of the recipe image.
+ * @param {number} data.servings - The default number of servings.
+ * @param {number} data.cookingTime - The preparation time in minutes.
+ */
 const controlRecipeUpload = async function (data) {
   try {
+    console.log(data);
+
     editorView.renderSpinner();
 
     // 1) Send recipe data to the API
@@ -123,6 +164,9 @@ const controlRecipeUpload = async function (data) {
   }
 };
 
+/**
+ * Initializes event handlers.
+ */
 const init = function () {
   bookmarksView.addHandlerRender(controlBookmarksRender);
   recipeView.addHandlerRender(controlRecipes);
