@@ -42,23 +42,30 @@ class Pagination extends View {
       this._data.results.length / this._data.resultsPerPage
     );
 
-    // 1) On page 1 and there are other pages
-    if (curPage === 1 && numPages > 1) {
-      return generateMarkupButton('next');
-    }
+    // 0) No pagination if only one page
+    if (numPages === 1) return '';
 
-    // 2) On the last page
-    if (curPage === numPages && numPages > 1) {
-      return generateMarkupButton('prev');
-    }
+    return `
+      <button class="btn--inline pagination__btn--prev ${
+        curPage === 1 ? 'hidden' : ''
+      }" data-goto="${curPage - 1}">
+        <svg class="search__icon">
+          <use href="${icons}#icon-arrow-left"></use>
+        </svg>
+        <span>Page ${curPage - 1}</span>
+      </button>
 
-    // 3) On any other page
-    if (curPage !== 1 && curPage < numPages) {
-      return generateMarkupButton('prev') + generateMarkupButton('next');
-    }
+      <span class="pagination__pages">Page ${curPage} of ${numPages}</span>
 
-    // 4) Only one page
-    return '';
+      <button class="btn--inline pagination__btn--next ${
+        curPage === numPages ? 'hidden' : ''
+      }" data-goto="${curPage + 1}">
+        <span>Page ${curPage + 1}</span>
+        <svg class="search__icon">
+          <use href="${icons}#icon-arrow-right"></use>
+        </svg>
+      </button>
+    `;
   }
 
   addHandlerClick(handler) {

@@ -10,22 +10,27 @@
 }
 
 .pagination {
+  display: grid;
+  align-items: center;
+  grid-template-columns: auto 1fr auto;
   margin-top: auto;
   padding: 0 3.5rem;
 
-  &::after {
-    content: '';
-    display: table;
-    clear: both;
+  &__btn--prev {
+    grid-column: 1;
   }
 
-  &__btn {
-    &--prev {
-      float: left;
-    }
-    &--next {
-      float: right;
-    }
+  &__pages {
+    grid-column: 2;
+    font-size: 1.15rem;
+    color: $color-grey-dark-2;
+    text-transform: uppercase;
+    text-align: center;
+    font-weight: 600;
+  }
+
+  &__btn--next {
+    grid-column: 3;
   }
 }
 
