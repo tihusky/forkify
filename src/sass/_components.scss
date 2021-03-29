@@ -152,6 +152,24 @@
   }
 }
 
+.btn--add-ingredient {
+  padding: 0.5em;
+  background: transparent;
+  border: 2px solid $color-grad-1;
+  border-radius: 5px;
+  color: $color-grad-1;
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    border-color: $color-grad-2;
+    color: $color-grad-2;
+  }
+}
+
 .heading--2 {
   font-size: 2rem;
   font-weight: 700;

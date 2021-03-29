@@ -38,44 +38,51 @@
 }
 
 .upload {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem 6rem;
-
-  &__column {
-    display: grid;
-    grid-template-columns: 1fr 2.8fr;
+  &__input-group {
+    display: flex;
     align-items: center;
-    gap: 1.5rem;
+    justify-content: space-between;
+  }
 
-    & label {
-      font-size: 1.5rem;
-      font-weight: 600;
-      color: inherit;
+  &__meta,
+  &__ingredients {
+    margin-bottom: 3rem;
+  }
+
+  &__meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem 4rem;
+  }
+
+  &__ingredients-row {
+    display: grid;
+    grid-template-columns: 15% 15% 67%;
+    gap: 1.5%;
+    margin-bottom: 1rem;
+  }
+
+  & label {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: inherit;
+  }
+
+  & input {
+    font-size: 1.5rem;
+    padding: 0.8rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 0.5rem;
+    transition: all 0.2s;
+
+    &::placeholder {
+      color: $color-grey-light-3;
     }
 
-    & input {
-      font-size: 1.5rem;
-      padding: 0.8rem 1rem;
-      border: 1px solid #ddd;
-      border-radius: 0.5rem;
-      transition: all 0.2s;
-
-      &::placeholder {
-        color: $color-grey-light-3;
-      }
-
-      &:focus {
-        outline: none;
-        border: 1px solid $color-primary;
-        background-color: $color-grey-light-1;
-      }
-    }
-
-    & button {
-      grid-column: 1 / span 2;
-      justify-self: center;
-      margin-top: 1rem;
+    &:focus {
+      outline: none;
+      border: 1px solid $color-primary;
+      background-color: $color-grey-light-1;
     }
   }
 
@@ -84,11 +91,11 @@
     font-weight: 700;
     text-transform: uppercase;
     margin-bottom: 1rem;
-    grid-column: 1/-1;
+    grid-column: 1 / -1;
   }
 
   &__btn {
-    grid-column: 1 / -1;
+    margin: 0 auto;
     justify-self: center;
   }
 }
