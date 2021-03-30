@@ -32,7 +32,19 @@ class EditorView extends View {
     const markup = `
       <div class="upload__ingredients-row">
         <input type="number" name="quantity" placeholder="Quantity" />
-        <input type="text" name="unit" placeholder="Unit" />
+        <select name="unit">
+              <option value="">-- Unit --</option>
+              <option value="">(n/a)</option>
+              <option value="ml">Milliliter</option>
+              <option value="l">Liter</option>
+              <option value="g">Gram</option>
+              <option value="kg">Kilogram</option>
+              <option value="tbsp">Tablespoon</option>
+              <option value="tsp">Teaspoon</option>
+              <option value="c">Cup</option>
+              <option value="oz">Ounce</option>
+              <option value="lb">Pound</option>
+            </select>
         <input type="text" name="description" placeholder="Description" />
       </div>
     `;
