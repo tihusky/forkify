@@ -138,8 +138,6 @@ const controlBookmarksRender = function () {
  */
 const controlRecipeUpload = async function (data) {
   try {
-    console.log(data);
-
     editorView.renderSpinner();
 
     // 1) Send recipe data to the API

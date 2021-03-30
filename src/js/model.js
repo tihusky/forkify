@@ -159,45 +159,33 @@ export const deleteBookmark = function (id) {
  * Sends recipe data to the API. On success the API will send back the same recipe
  * which will then be set as the currently active recipe in the application.
  *
- * The recipeData object must have the properties "ingredient-1" ... "ingredient-6" with
- * their values being in the format "quantity,unit,description".
+ * @param {FormData} recipeData A FormData instance containing submitted recipe data.
  *
- * @param {object} recipeData An object containing recipe data.
- * @param {string} recipeData.title - The name of the recipe.
- * @param {string} recipeData.publisher - The author of the recipe.
- * @param {string} recipeData.sourceUrl - The URL of the website providing the recipe.
- * @param {string} recipeData.image - The URL of the recipe image.
- * @param {number} recipeData.servings - The default number of servings.
- * @param {number} recipeData.cookingTime - The preparation time in minutes.
- *
- * @throws Will throw an error if the ingredients have the wrong format.
  * @throws Will throw an error if adding the recipe was not successful.
  */
 export const uploadRecipe = async function (recipeData) {
   try {
-    const ingredients = Object.entries(recipeData)
-      .filter(entry => entry[0].includes('ingredient') && entry[1] !== '')
-      .map(entry => {
-        const ingArr = entry[1].trim().split(',');
+    // 1) Get values from ingredient rows
+    const quantities = recipeData.getAll('quantity');
+    const units = recipeData.getAll('unit');
+    const descriptions = recipeData.getAll('description');
 
-        if (ingArr.length !== 3) throw new Error('Wrong ingredient format!');
-
-        const [quantity, unit, description] = ingArr;
-
-        return {
-          quantity: quantity ? Number(quantity) : null,
-          unit,
-          description,
-        };
-      });
+    // 2) Create array of ingredient objects
+    const ingredients = quantities.map((quantity, i) => {
+      return {
+        quantity,
+        unit: units[i],
+        description: descriptions[i],
+      };
+    });
 
     const recipe = {
-      publisher: recipeData.publisher,
-      source_url: recipeData.sourceUrl,
-      image_url: recipeData.image,
-      title: recipeData.title,
-      servings: Number(recipeData.servings),
-      cooking_time: Number(recipeData.cookingTime),
+      publisher: recipeData.get('publisher'),
+      source_url: recipeData.get('sourceUrl'),
+      image_url: recipeData.get('image'),
+      title: recipeData.get('title'),
+      servings: Number(recipeData.get('servings')),
+      cooking_time: Number(recipeData.get('cookingTime')),
       ingredients,
     };
 
