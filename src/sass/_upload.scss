@@ -55,6 +55,12 @@
     gap: 1rem 4rem;
   }
 
+  &__ingredients {
+    max-height: 36rem;
+    padding-right: 1rem;
+    overflow-y: auto;
+  }
+
   &__ingredients-row {
     display: grid;
     grid-template-columns: 15% 15% 67%;
