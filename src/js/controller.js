@@ -122,19 +122,10 @@ const controlBookmarksRender = function () {
 /**
  * Sends recipe data to the API and updates the UI as well as the URL.
  *
- * The data object must have the properties "ingredient-1" ... "ingredient-6" with
- * their values being in the format "quantity,unit,description".
- *
  * Newly submitted recipes are bookmarked by default and then shown in
  * the recipe view.
  *
- * @param {object} data An object containing recipe data.
- * @param {string} data.title - The name of the recipe.
- * @param {string} data.publisher - The author of the recipe.
- * @param {string} data.sourceUrl - The URL of the website providing the recipe.
- * @param {string} data.image - The URL of the recipe image.
- * @param {number} data.servings - The default number of servings.
- * @param {number} data.cookingTime - The preparation time in minutes.
+ * @param {FormData} data A FormData instance containing submitted recipe data.
  */
 const controlRecipeUpload = async function (data) {
   try {
